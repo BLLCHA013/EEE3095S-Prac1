@@ -349,6 +349,12 @@ void TIM16_IRQHandler(void) {
 
     // TODO: Change LED pattern
     // print something
+    //GPIOB->ODR = ledPattern; // write current LED pattern to GPIOB ODR register
+    ledPattern <<= 1; // shift current LED pattern left by 1
+    HAL_GPIO_WritePin(GPIOB, 0b0000000011111111, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(GPIOB, ledPattern, GPIO_PIN_SET);
+
+    TIM16->SR &= ~TIM_SR_UIF; // reset update interrupt flag to re-arm timer
 }
 
 /* USER CODE END 4 */
