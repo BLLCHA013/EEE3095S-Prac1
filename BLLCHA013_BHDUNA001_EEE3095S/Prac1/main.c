@@ -104,7 +104,7 @@ int main(void) {
 
         /* USER CODE BEGIN 3 */
 
-        // TODO: Check pushbuttons to change timer delay
+        // Check pushbuttons to change timer delay
         if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == 0) { //SW0 pressed
             htim16.Init.Period = 500-1; // 0.5s delay
             uint16_t ledPatternTemp = ledPattern; // backup current LED pattern since timer change clobbers it
@@ -353,8 +353,9 @@ void TIM16_IRQHandler(void) {
     else {
         ledPattern <<= 1; // shift current LED pattern left by 1
     }
-    HAL_GPIO_WritePin(GPIOB, 0b0000000011111111, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(GPIOB, ledPattern, GPIO_PIN_SET);
+
+    HAL_GPIO_WritePin(GPIOB, 0b0000000011111111, GPIO_PIN_RESET); // reset appropriate LED GPIO pins before writing new pattern
+    HAL_GPIO_WritePin(GPIOB, ledPattern, GPIO_PIN_SET); // write new state to appropriate GPIO pins
 
     TIM16->SR &= ~TIM_SR_UIF; // reset update interrupt flag to re-arm timer
 }
