@@ -44,6 +44,9 @@ TIM_HandleTypeDef htim16;
 
 /* USER CODE BEGIN PV */
 // TODO: Define input variables
+const uint16_t ledPattern1 = 0b0000000010010111; // pattern 1
+const uint16_t ledPattern1Alt = 0b0000000011101001; // alternate pattern 1 (reversed order)
+uint16_t ledPattern = ledPattern1Alt; // init pattern
 
 
 /* USER CODE END PV */
