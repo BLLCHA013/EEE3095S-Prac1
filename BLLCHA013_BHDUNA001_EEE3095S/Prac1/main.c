@@ -43,10 +43,9 @@
 TIM_HandleTypeDef htim16;
 
 /* USER CODE BEGIN PV */
-// TODO: Define input variables
-const uint16_t ledPattern1 = 0b0000000010010111;    // pattern 1
-const uint16_t ledPattern1Alt = 0b0000000011101001; // alternate pattern 1 (reversed order)
-uint16_t ledPattern = ledPattern1Alt;               // init pattern
+// Define input variables
+const uint16_t ledPattern1 = 0b0000000011101001; // pattern 1
+uint16_t ledPattern = ledPattern1;               // init pattern
 
 /* USER CODE END PV */
 
@@ -91,7 +90,6 @@ int main(void) {
     MX_TIM16_Init();
     /* USER CODE BEGIN 2 */
 
-    // TODO: Start timer TIM16
     // Start timer TIM16
     if (HAL_TIM_Base_Start_IT(&htim16) != HAL_OK) {
         Error_Handler();
@@ -138,7 +136,7 @@ int main(void) {
             ledPattern = ledPatternTemp; // restore clobbered LED pattern
         }
         else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == 0) { //SW3 pressed
-            ledPattern = ledPattern1Alt; // reset LED pattern
+            ledPattern = ledPattern1; // reset LED pattern
         }
 
     }
@@ -347,9 +345,8 @@ void TIM16_IRQHandler(void) {
     // Acknowledge interrupt
     HAL_TIM_IRQHandler(&htim16);
 
-    // TODO: Change LED pattern
-    // print something
-    //GPIOB->ODR = ledPattern; // write current LED pattern to GPIOB ODR register
+    // Change LED pattern
+
     ledPattern <<= 1; // shift current LED pattern left by 1
     HAL_GPIO_WritePin(GPIOB, 0b0000000011111111, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, ledPattern, GPIO_PIN_SET);
