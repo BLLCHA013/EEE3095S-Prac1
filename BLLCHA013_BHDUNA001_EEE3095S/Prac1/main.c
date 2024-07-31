@@ -346,8 +346,13 @@ void TIM16_IRQHandler(void) {
     HAL_TIM_IRQHandler(&htim16);
 
     // Change LED pattern
-
-    ledPattern <<= 1; // shift current LED pattern left by 1
+    // check if LED pattern has reached the final stage, revert to initial pattern if so
+    if (ledPattern == 0) {
+        ledPattern = ledPattern1; // revert to initial pattern
+    }
+    else {
+        ledPattern <<= 1; // shift current LED pattern left by 1
+    }
     HAL_GPIO_WritePin(GPIOB, 0b0000000011111111, GPIO_PIN_RESET);
     HAL_GPIO_WritePin(GPIOB, ledPattern, GPIO_PIN_SET);
 
