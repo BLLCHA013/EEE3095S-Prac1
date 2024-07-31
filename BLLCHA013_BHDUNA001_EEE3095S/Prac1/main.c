@@ -107,6 +107,40 @@ int main(void) {
         /* USER CODE BEGIN 3 */
 
         // TODO: Check pushbuttons to change timer delay
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0) == 0) { //SW0 pressed
+            htim16.Init.Period = 500-1; // 0.5s delay
+            uint16_t ledPatternTemp = ledPattern; // backup current LED pattern since timer change clobbers it
+            // reinit timer with new init period value
+            if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+            {
+                Error_Handler();
+            }
+            ledPattern = ledPatternTemp; // restore clobbered LED pattern
+        }
+        else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_1) == 0) { //SW1 pressed
+            htim16.Init.Period = 2000-1; // 2s delay
+            uint16_t ledPatternTemp = ledPattern; // backup current LED pattern since timer change clobbers it
+            // reinit timer with new init period value
+            if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+            {
+                Error_Handler();
+            }
+            ledPattern = ledPatternTemp; // restore clobbered LED pattern
+        }
+        else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_2) == 0) { //SW2 pressed
+            htim16.Init.Period = 1000-1; // 1s delay
+            uint16_t ledPatternTemp = ledPattern; // backup current LED pattern since timer change clobbers it
+            // reinit timer with new init period value
+            if (HAL_TIM_Base_Init(&htim16) != HAL_OK)
+            {
+                Error_Handler();
+            }
+            ledPattern = ledPatternTemp; // restore clobbered LED pattern
+        }
+        else if (HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_3) == 0) { //SW3 pressed
+            ledPattern = ledPattern1Alt; // reset LED pattern
+        }
+
     }
     /* USER CODE END 3 */
 }
