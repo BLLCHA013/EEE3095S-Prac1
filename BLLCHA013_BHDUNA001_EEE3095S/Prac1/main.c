@@ -44,8 +44,10 @@ TIM_HandleTypeDef htim16;
 
 /* USER CODE BEGIN PV */
 // Define input variables
-const uint16_t ledPattern1 = 0b0000000011101001; // pattern 1
-uint16_t ledPattern = ledPattern1;               // init pattern
+//const uint16_t ledPattern1 = 0b0000000011101001; // pattern 1
+//uint16_t ledPattern = ledPattern1;               // init pattern
+const uint8_t ledPattern1 = 0b11101001; // pattern 1
+uint8_t ledPattern = ledPattern1;               // init pattern
 
 /* USER CODE END PV */
 
@@ -345,6 +347,9 @@ void TIM16_IRQHandler(void) {
     // Acknowledge interrupt
     HAL_TIM_IRQHandler(&htim16);
 
+    HAL_GPIO_WritePin(GPIOB, 0b0000000011111111, GPIO_PIN_RESET); // reset appropriate LED GPIO pins before writing new pattern
+    HAL_GPIO_WritePin(GPIOB, ledPattern, GPIO_PIN_SET); // write new state to appropriate GPIO pins
+
     // Change LED pattern
     // check if LED pattern has reached the final stage, revert to initial pattern if so
     if (ledPattern == 0) {
@@ -353,9 +358,6 @@ void TIM16_IRQHandler(void) {
     else {
         ledPattern <<= 1; // shift current LED pattern left by 1
     }
-
-    HAL_GPIO_WritePin(GPIOB, 0b0000000011111111, GPIO_PIN_RESET); // reset appropriate LED GPIO pins before writing new pattern
-    HAL_GPIO_WritePin(GPIOB, ledPattern, GPIO_PIN_SET); // write new state to appropriate GPIO pins
 
     TIM16->SR &= ~TIM_SR_UIF; // reset update interrupt flag to re-arm timer
 }
